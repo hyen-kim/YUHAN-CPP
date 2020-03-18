@@ -1,2 +1,3 @@
-# C-
-객체지향언어 C++ 
+# Cpp
+Object-oriented language C++
+
