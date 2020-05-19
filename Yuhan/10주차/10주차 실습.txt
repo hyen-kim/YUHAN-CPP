@@ -1,0 +1,285 @@
+=============================================================
+
+10주차
+
+=============================================================
+
+< C++ 프렌드 >
+
+프렌드 함수
+- 클래스의 멤버 함수가 아닌 외부 함수
+	-> 전역함수
+	-> 다른 클래스의 멤버 함수
+- friend 키워드로 클래스 내에 선언된 함수
+	-> 클래스의 모든 멤버를 접근할 수 있는 권한 부여
+	-> 프랜드 함수라고 부름
+- 프렌드 선언의 필요성
+	-> 클래스의 멤버로 선언하기에는 무리가 있고,
+	   클래스의 모든 멤버를 자유롭게 접근할 수 있는 일부 외부 함수 작성 시
+
+* 프렌드 함수가 되는 3가지
+- 전역 함수 : 클래스 외부에 선언된 전역 함수
+- 다른 클래스의 멤버 함수 : 다른 클래스의 특정 멤버 함수
+- 다른 클래스 전체 : 다른 클래스의 모든 멤버 함수
+
+ex)
+1. 외부 함수 equals()를 Rect 클래스에 프렌드로 선언
+class Rect {	// Rect 클래스 선언
+	...
+	friend bool equals(Rect r, Rect s);
+};
+
+2. RectManager 클래스의 equals() 멤버 함수를 Rect 클래스에 프렌드로 선언
+class Rect{
+	.......
+	friend bool RectManager::equals(Rect r, Rect s);
+};
+
+3. RectManager 클래스의 모든 멤버 함수를 Rect 클래스에 프렌드로 선언
+class Rect{
+	.......
+	friend RectManager;
+};
+
+
+
+
+
+
+
+< 연산자 중복 >
+일상 생활에서의 기호 사용
+- + 기호의 사례
+	-> 숫자 더하기
+	-> 색 혼합
+	-> 생활
+- + 기호를 숫자와 물체에 적용, 중복 사용
+- + 기호를 숫자가 아닌 곳에도 사용
+- 간결한 의미 전달
+- 다형성
+
+C++ 언어에서도 연산자 중복 가능
+	-> C++ 언어에 본래부터 있던 연산자에 새로운 의미 정의
+	-> 높은 프로그램 가독성
+ex) 
+1. 정수 더하기
+2. 문자열 합치기
+3. 색 섞기
+4. 배열 합치기
+
+* 특징
+- C++에 본래 있는 연산자만 중복 가능
+- 피 연산자 타입이 다른 새 로운 연산 정의
+- 연산자는 함수 형태로 구현 - 연산자 함수
+- 반드시 클래스와 관계를 가짐
+- 피연산자의 개수를 바꿀 수 없음
+- 연산의 우선 순위 변경 안됨
+- 모든 연산자가 중복 가능하지 않음
+-> 중복 불가능한 연산자 : ., *, ::(범위저정연산자), ?:(3항 연산자)
+
+
+
+
+
+
+
+< 연산자 함수 >
+
+* 연산자 함수 구현 방법 2가지
+1. 클래스의 멤버 함수로 구현
+2. 외부 함수로 구현하고 클래스에 프렌드 함수로 선언
+
+* 연산자 함수 형식
+리턴타입 operator연산자(매개변수리스트);
+
+
+
+
+
+
+
+
+< +와 == 연산자의 작성 사례 >
+연산자 함수 작성이 필요한 코드 사례
+Color a(BLUE), b(RED), c;
+c = a + b;	// a와 b를 더하기 위한 + 연산자 작성 필요
+if(a == b) {	// a와 b를 비교하기 위한 == 연산자 작성 필요
+	....
+}
+
+ex)
+1. 외부 함수로 구현되고 클래스에 프렌드로 선언되는 경우
+Color operator + (Color op1, Color op2);	// 외부 함수
+bool operator == (Color op1, Color op2);	// 외부 함수
+
+class Color {
+	....
+	friend Color operator+ (Color op1, Color op2);
+	friend bool operator== (Color op1, Color op2);
+};
+
+2. 클래스의 멤버 함수로 작성되는 경우
+class Color {
+	....
+	Color operator+ (Color op2);
+	// 클래스 자체에 Color 자신과 op2를 더하는 것이기 때문에
+	// 매개변수가 한개를 사용하는 것임
+	bool operator== (Color op2);
+};
+
+* 앞으로 연산자 함수 작성에 사용할 클래스
+class Power {	// 에너지를 표현하는 파워 클래스
+	int kick;	// 발로 차는힘
+	int punch;	// 주먹으로 치는 힘
+public:
+	Power(int kick = 0, int punch = 0) {
+		this->kick = kick;
+		this->punch = punch;
+	}
+};
+
+
+
+
+
+
+< + 연산자를 외부 프렌드 함수로 구현 > 
+
+c = a + b 	-------------------->	c = + (a, b);
+		컴파일러에 의한 변환
+
+Power operator+ (Power op1, Power op2){
+	Power tmp;
+	tmp.kick = op1.kick + op2.kick;
+	tmp.punch = op1.punch + op2.punch;
+	return tmp;
+}
+
+
+==> 이제부터 헤더파일과 cpp 파일 구분
+
+
+
+
+
+< 이항 연산자 중복 : + 연산자 >
+c = a + b;	-------------------->	c = a. + (b);
+		컴파일러에 의한 변환
+
+class Power {	
+	int kick;	
+	int punch;	
+public:
+	Power operator+ (Power op2);	
+	// 자기 자신과 무언가를 더하는 형식으로 처리
+};
+
+Power Power::operator+ (Power op2){	// + 연산자 함수 코드
+	Power tmp;
+	tmp.kick = this->kick + op2.kick;
+	tmp.punch = this->punch + op2.punch;
+	return tmp;
+}
+
+
+
+
+
+< == 연산자 중복 >
+a == b;	-------------------->	a. == (b);
+	컴파일러에 의한 변환
+
+class Power {	
+	.....	
+public:
+	bool operator== (Power op2);
+};
+
+Power Power::operator== (Power op2){	// + 연산자 함수 코드
+	if(kick==op2.kick && punch==op2.punch)
+		return true;
+	else
+		return false;
+}
+
+
+
+
+
+< += 연산자 중복 >
+c = a += b;	-------------------->	a. += (b);
+		컴파일러에 의한 변환
+
+class Power {	
+	.....	
+public:
+	Power& operator+= (Power op2);	
+};
+
+Power& Power::operator+= (Power op2){	
+	kick = kick + op2.kick;
+	punch = punch + op2.punch;
+	return *this;	// 자신의 참조 리턴
+}
+
+
+
+
+
+
+
+< 2 + a 덧셈을 위한 + 연산자 함수 작성 >
+Power a(3, 4), b;
+b = 2 + a;
+
+b = 2 + a;		① 변환 불가능	--> b = 2. + (a);
+			② 변환 가능	--> b = (2, a);
+				외부 연산자 함수명, 왼쪽피연산자, 오른쪽피연산자
+
+b = 2 + a;	-------------------->	b = + (2, a);
+		컴파일러에 의한 변환
+
+Power operator+ (int op1, Power op2){
+	Power tmp;
+	tmp.kick = op1 + op2.kick;
+	tmp.punch = op1 + op2.punch;
+	return tmp;
+}
+	
+
+
+
+
+
+< 단항 연산자 중복 >
+단항 연산자
+- 피연산자가 하나 뿐인 연산자
+	-> 연산자 중복 방식은 이항 연산자의 경우와 거의 유사함
+- 단항 연산자 종류
+	-> 전위 연산자
+	: !op, ~op, ++op, --op
+	-> 후위 연산자
+	: op++, op--
+
+ex) ++연산자를 프렌드로 작성한 예 (전위, 후위)
+(a) 전위 연산자 : 먼저 증가
+++a	-------------------->	++ (a);
+	컴파일러에 의한 변환
+Power& operator++ (Power& op){
+	op.kick++;
+	op.punch++;
+	return op;	
+}
+
+(b) 후위 연산자	: 먼저 계산 후 증가
+a++	-------------------->	++ (a, 0);	// 0은 의미 없는 값으로 전위 연산자와 구분하기 위함
+	컴파일러에 의한 변환
+Power operator++ (Power& op, int x){
+	Power tmp = op;	// 자기자신을 증가시키때문에 tmp에 값을 담아놔야함
+	op.kick++;
+	op.punch++;
+	return tmp;	
+}
+
+
+
