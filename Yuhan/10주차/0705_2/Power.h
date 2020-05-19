@@ -7,7 +7,8 @@ class Power {	// 에너지를 표현하는 파워 클래스
 public:
 	Power(int kick = 0, int punch = 0);
 	void show();
-	friend Power operator+ (Power op1, Power op2);	// 프렌드 선언
+	friend Power operator+ (Power op1, Power op2);	
+	friend Power operator- (Power op1, Power op2);	
 };
 
 #endif // !POWER_H

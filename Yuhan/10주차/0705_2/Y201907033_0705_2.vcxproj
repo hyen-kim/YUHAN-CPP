@@ -147,7 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Power.cpp" />
     <ClCompile Include="Y201907033_0705_2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Power.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
