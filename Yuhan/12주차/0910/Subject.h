@@ -5,7 +5,7 @@ class Subject {
 private:
 	Subject* next;
 protected:
-	virtual void subjectwname() = 0;		// 과목명 : 순수가상함수
+	virtual void subjectwname() = 0;		// 수강신청 : 순수가상함수
 public:
 	Subject();
 	virtual ~Subject();

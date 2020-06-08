@@ -2,19 +2,16 @@
 using namespace std;
 #include "Subject.h"
 
-void Subject::subjectwname() {
-	cout << "< SubjectName >" << endl;
-}
-
-Subject::Subject() {		// 생성자
+Subject::Subject() {		
 	next = NULL;
 }
 
-Subject::~Subject() {		// 소멸자
+Subject::~Subject() {		// 가상 소멸자
+	
 }
 
 void Subject::paint() {		// 출력
-	subjectwname();
+	subjectwname();			// 순수가상함수 호출
 }
 
 Subject* Subject::add(Subject* p) {

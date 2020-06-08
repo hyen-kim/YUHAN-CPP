@@ -17,6 +17,7 @@ int main()
     pStart = new Java();  
     pLast = pStart;
 
+    cout << "-- 수강 신청합니다. --" << endl;
     pLast = pLast->add(new Cpp());  // Cpp 객체 생성
     pLast = pLast->add(new Java()); // Java 객체 생성
     pLast = pLast->add(new Linux()); // Linux 객체 생성
@@ -36,11 +37,10 @@ int main()
         q = p->getNext();   // 다음 도형 주소
         // delete를 해야하므로 delete하기 전에 다음 주소 값을 저장한다는 개념
         delete p;   // 기본 클래스의 가상 소멸자 호출
-        p = q;      // 다음 도형 주소를 p에 저장
+        p = q;      
     }
 
     system("pause");
-
     // 모든 메모리가 반환되면서 프로그램이 종료되게 된다.
 
 }
